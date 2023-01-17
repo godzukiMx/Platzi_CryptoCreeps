@@ -15,8 +15,10 @@ public class Player : MonoBehaviour
     [SerializeField] Camera camara;
     [SerializeField] Transform bulletPrefab;
     [SerializeField] float fireRate = 1;
+    bool powerShotEnable;
     [SerializeField] int playerHealth = 20;
-    
+    bool invulnerable;
+    [SerializeField] float invulnerableTime = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +45,12 @@ public class Player : MonoBehaviour
             gunLoaded = false;
             float angle = Mathf.Atan2(facingDirection.y, facingDirection.x) * Mathf.Rad2Deg;
             Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.forward);
-            Instantiate(bulletPrefab, transform.position, targetRotation);
+            Transform bulletClone = Instantiate(bulletPrefab, transform.position, targetRotation);
+
+            if (powerShotEnable){
+                bulletClone.GetComponent<Bullet>().powerShot = true;
+            }
+            
             StartCoroutine(ReloadGun());
         }
 
@@ -56,6 +63,36 @@ public class Player : MonoBehaviour
     }
 
     public void TakeDamage (){
+        if(invulnerable){
+            return;
+        }
+        
         playerHealth --;
+        invulnerable = true;
+        StartCoroutine(MakeVulnerableAgain());
+
+        if(playerHealth <= 0){
+            // gameover
+        }
+    }
+
+    IEnumerator MakeVulnerableAgain(){
+        yield return new WaitForSeconds(invulnerableTime);
+        invulnerable = false;
+    }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.CompareTag("PowerUp")){
+            switch (collision.GetComponent<PowerUp>().powerType){
+                case PowerUp.PowerUpType.FireRateIncrease:
+                fireRate++;
+                break;
+                case PowerUp.PowerUpType.PowerShot:
+                powerShotEnable = true;
+                break;
+            }
+            Destroy(collision.gameObject, 0.1f);
+        }
     }
 }
