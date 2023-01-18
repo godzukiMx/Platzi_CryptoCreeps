@@ -81,7 +81,7 @@ public class Player : MonoBehaviour
         invulnerable = false;
     }
 
-    private void OnTriggerEnter(Collider collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("PowerUp")){
             switch (collision.GetComponent<PowerUp>().powerType){

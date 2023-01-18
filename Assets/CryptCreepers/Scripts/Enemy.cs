@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    Transform player;
+    private Transform player;
     [SerializeField] float speed = 1;
     [SerializeField] int health = 1;
+    [SerializeField] int scorePoints = 100;
 
     private void Start()
     {
@@ -25,6 +26,7 @@ public class Enemy : MonoBehaviour
     [HideInInspector] public void TakeDamage() {
         health --;
         if(health <= 0){
+            GameManager.Instance.Score += scorePoints;
             KillEnemy();
         }
     }
