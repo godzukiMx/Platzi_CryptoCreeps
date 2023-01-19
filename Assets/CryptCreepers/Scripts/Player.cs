@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     Vector3 moveDirection;
     Vector2 facingDirection;
     bool gunLoaded = true;
-    [SerializeField] float speed = 3;
+    public float speed = 3;
     [SerializeField] Transform aim;
     [SerializeField] Camera camara;
     [SerializeField] Transform bulletPrefab;
