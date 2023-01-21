@@ -20,10 +20,18 @@ public class Player : MonoBehaviour
     bool invulnerable;
     [SerializeField] float invulnerableTime = 3;
 
+    public int Health{
+        get => playerHealth;
+        set{
+            playerHealth = value;
+            UIManager.Instance.UpdateUIHealth(Health);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        UIManager.Instance.UpdateUIHealth(Health);
     }
 
     // Update is called once per frame
@@ -67,12 +75,13 @@ public class Player : MonoBehaviour
             return;
         }
         
-        playerHealth --;
+        Health--;
         invulnerable = true;
         StartCoroutine(MakeVulnerableAgain());
 
-        if(playerHealth <= 0){
-            // gameover
+        if(Health <= 0){
+            GameManager.Instance.gameOver = true;
+            UIManager.Instance.ShowGameOverScreen();
         }
     }
 
