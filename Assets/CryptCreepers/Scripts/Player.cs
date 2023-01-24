@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
     [SerializeField] int playerHealth = 20;
     bool invulnerable;
     [SerializeField] float invulnerableTime = 3;
+    [SerializeField] Animator anim;
+    [SerializeField] SpriteRenderer spriteRenderer;
 
     public int Health{
         get => playerHealth;
@@ -62,6 +64,12 @@ public class Player : MonoBehaviour
             StartCoroutine(ReloadGun());
         }
 
+        anim.SetFloat("Speed", moveDirection.magnitude);
+        if (aim.position.x > transform.position.x){
+            spriteRenderer.flipX = true;
+        }else if(aim.position.x < transform.position.x){
+                spriteRenderer.flipX = false;
+        }
 
     }
 
