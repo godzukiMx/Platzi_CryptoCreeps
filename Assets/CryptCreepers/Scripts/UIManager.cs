@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Text scoreText;
     [SerializeField] Text timeText;
     [SerializeField] GameObject gameOverScreen;
+    [SerializeField] GameObject titleScreen;
     [SerializeField] Text finalScore;
 
     public void Awake()
@@ -33,6 +34,6 @@ public class UIManager : MonoBehaviour
 
     public void ShowGameOverScreen(){
         gameOverScreen.SetActive(true);
-        finalScore.text = "Score: " + GameManager.Instance.Score;
+        finalScore.text = GameManager.Instance.Score.ToString();
     }
 }

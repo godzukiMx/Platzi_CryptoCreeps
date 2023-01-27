@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1;
         StartCoroutine(CountdownRoutine());
     }
 
@@ -50,6 +51,7 @@ public class GameManager : MonoBehaviour
         }
 
         gameOver = true;
+        Time.timeScale = 0;
         UIManager.Instance.ShowGameOverScreen();
     }
 
