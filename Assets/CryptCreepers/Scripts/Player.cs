@@ -21,6 +21,8 @@ public class Player : MonoBehaviour
     [SerializeField] float invulnerableTime = 3;
     [SerializeField] Animator anim;
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] float blinkRate = 0.1f;
+    CameraController camController;
 
     public int Health{
         get => playerHealth;
@@ -33,7 +35,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UIManager.Instance.UpdateUIHealth(Health);
+        //UIManager.Instance.UpdateUIHealth(Health);
+        camController = FindObjectOfType<CameraController>();
     }
 
     // Update is called once per frame
@@ -85,6 +88,7 @@ public class Player : MonoBehaviour
         
         Health--;
         invulnerable = true;
+        camController.Shake();
         StartCoroutine(MakeVulnerableAgain());
 
         if(Health <= 0){
@@ -94,8 +98,20 @@ public class Player : MonoBehaviour
     }
 
     IEnumerator MakeVulnerableAgain(){
+        StartCoroutine(BlinkRoutine());
         yield return new WaitForSeconds(invulnerableTime);
         invulnerable = false;
+    }
+
+    IEnumerator BlinkRoutine(){
+        int t = 15;
+        while (t > 0){
+            spriteRenderer.enabled = false;
+            yield return new WaitForSeconds(blinkRate);
+            spriteRenderer.enabled = true;
+            yield return new WaitForSeconds(blinkRate);
+            t--;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

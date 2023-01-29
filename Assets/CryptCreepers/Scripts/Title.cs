@@ -5,16 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class Title : MonoBehaviour
 {
+    private AudioManager titleMusic;
+
     // Start is called before the first frame update
     void Start()
     {
+        titleMusic = FindObjectOfType<AudioManager>();
+        titleMusic.TitleMusic();
         Time.timeScale = 0;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void StartGame(){

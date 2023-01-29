@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public int time = 30;
     public bool gameOver = false;
     [SerializeField] int score;
+    private AudioManager gameMusic;
 
     public int Score{
         get => score;
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        gameMusic = FindObjectOfType<AudioManager>();
         Time.timeScale = 1;
         StartCoroutine(CountdownRoutine());
     }
@@ -46,12 +48,14 @@ public class GameManager : MonoBehaviour
     // Game over when the time comes down to 0
     IEnumerator CountdownRoutine(){
         while (uiTime > 0){
+            gameMusic.GameMusic();
             yield return new WaitForSeconds(1);
             uiTime--;
         }
 
         gameOver = true;
         Time.timeScale = 0;
+        gameMusic.GameOverMusic();
         UIManager.Instance.ShowGameOverScreen();
     }
 
